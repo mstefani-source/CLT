@@ -6,7 +6,6 @@ if os.environ.get('DISPLAY', '') == '':
     print('no display found. Using non-interactive Agg backend')
     mpl.use('Agg')
 import matplotlib.pyplot as plt
-from tkinter import *
 
 
 def get_uni():
@@ -41,11 +40,13 @@ def calc_avg(a):
 
 
 def main():
-    a = []
-    for x in range(10 ** 5):
-        b = calc_avg(get_par())
-        a.append(b)
-    plt.hist(a, bins=100)
+
+    a, m = 3., 2.  # shape and mode
+    s = (np.random.pareto(a, 1000) + 1) * m
+    # Display the histogram of the samples, along with the probability density function:
+    count, bins, _ = plt.hist(s, 100, density=True)
+    fit = a * m ** a / bins ** (a + 1)
+    plt.plot(bins, max(count) * fit / max(fit), linewidth=2, color='r')
     plt.show()
 
 
